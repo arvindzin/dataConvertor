@@ -133,8 +133,6 @@ class Redirector:
                 ser,
                 connection,
                 client,
-                None,
-                None,
                 True,
             )
             r.serial_ip_bridge()
