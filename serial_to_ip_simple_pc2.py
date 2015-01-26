@@ -44,11 +44,6 @@ class Redirector:
                     if self.spy:
                         sys.stdout.write(codecs.escape_encode(data)[0])
                         sys.stdout.flush()
-                    if self.ser_newline and self.net_newline:
-                        # do the newline conversion
-                        # XXX fails for CR+LF in input when it is cut in half at the begin or end of the string
-                        data = net_newline.join(data.split(ser_newline))
-                    # escape outgoing data when needed (Telnet IAC (0xff) character)
                     self._write_lock.acquire()
                     try:
                         self.socket.sendall(data)           # send it over TCP
@@ -122,7 +117,7 @@ class Redirector:
     srv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     clientAddr = ('192.168.2.3', 10001)
-    client.connect(cientAddr)
+    client.connect(clientAddr)
     #srv.bind( ('localhost', options.local_port) )
     srv.bind( ('192.168.2.4', 10000) )
     srv.listen(1)
