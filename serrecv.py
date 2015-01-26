@@ -6,7 +6,7 @@ ser1 = serial.Serial('/dev/ttys1', 115200, timeout=5)
 ser2 = serial.Serial('/dev/ttys2', 115200, timeout=5)
 ser3 = serial.Serial('/dev/ttys3', 115200, timeout=5)
 
-def recvSerial(threadname, serial)
+def recvSerial(threadname, serial):
     print "%s" % ( threadName )
     while True:
         x= serial.read(6)
