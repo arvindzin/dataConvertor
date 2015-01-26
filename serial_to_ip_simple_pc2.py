@@ -118,6 +118,7 @@ class Redirector:
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     clientAddr = ('192.168.2.3', 10001)
     client.connect(clientAddr)
+    
     #srv.bind( ('localhost', options.local_port) )
     srv.bind( ('192.168.2.4', 10000) )
     srv.listen(1)
