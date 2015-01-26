@@ -91,6 +91,8 @@ class Redirector:
         if self.alive:
             self.alive = False
             self.thread_read.join()
+            
+if __name__ == '__main':
 
     # get port and baud rate from command line arguments or the option switches
     port = "/dev/ttyS0"
