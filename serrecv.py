@@ -10,7 +10,7 @@ def recvSerial(threadname, serial):
     while True:
         x= serial.read(6)
         if x:
-            print "%s:%s"(x)
+            print(x)
             print "%s" % ( threadname )
     serial.close()
 
