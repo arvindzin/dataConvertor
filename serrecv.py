@@ -7,7 +7,7 @@ ser2 = serial.Serial('/dev/ttyS2', 115200, timeout=5)
 ser3 = serial.Serial('/dev/ttyS3', 115200, timeout=5)
 
 def recvSerial(threadname, serial):
-    print "%s" % ( threadName )
+    print "%s" % ( threadname )
     while True:
         x= serial.read(6)
         print(x)
