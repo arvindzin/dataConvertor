@@ -9,14 +9,14 @@ ser0.baudrate=115200
 ser1.baudrate=115200
 ser2.baudrate=115200
 ser3.baudrate=115200
-while True
-    data="p0"
+while True:
+    data="From port0"
     x= ser0.write(data)
-    data="p1"
+    data="From port1"
     x= ser1.write(data)
-    data="p2"
+    data="From port2"
     x= ser2.write(data)
-    data="p3"
+    data="From port3"
     x= ser3.write(data)
     time.sleep(3)
 ser0.close()
