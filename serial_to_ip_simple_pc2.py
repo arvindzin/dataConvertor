@@ -70,10 +70,6 @@ class Redirector:
                 data = self.socketClient.recv(1024)
                 if not data:
                     break
-                if self.ser_newline and self.net_newline:
-                    # do the newline conversion
-                    # XXX fails for CR+LF in input when it is cut in half at the begin or end of the string
-                    data = ser_newline.join(data.split(net_newline))
                 self.serial.write(data)                 # get a bunch of bytes and send them
                 # the spy shows what's on the serial port, so log it after converting newlines
                 if self.spy:
