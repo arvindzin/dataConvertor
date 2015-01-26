@@ -116,15 +116,15 @@ class Redirector:
 
     srv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    clientAddr = ('192.168.2.3', 10001)
+    clientAddr = ('192.168.2.3', 10000)
     client.connect(clientAddr)
     
     #srv.bind( ('localhost', options.local_port) )
-    srv.bind( ('192.168.2.4', 10000) )
+    srv.bind( ('192.168.2.4', 10001) )
     srv.listen(1)
     while True:
         try:
-            sys.stderr.write("Waiting for connection on %s...\n" % 10000)
+            sys.stderr.write("Waiting for connection on %s...\n" % 10001)
             connection, addr = srv.accept()
             sys.stderr.write('Connected by %s\n' % (addr,))
             time.sleep(2)
