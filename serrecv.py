@@ -1,10 +1,10 @@
 import serial
 import thread
 
-ser0 = serial.Serial('/dev/ttys0', 115200, timeout=5)
-ser1 = serial.Serial('/dev/ttys1', 115200, timeout=5)
-ser2 = serial.Serial('/dev/ttys2', 115200, timeout=5)
-ser3 = serial.Serial('/dev/ttys3', 115200, timeout=5)
+ser0 = serial.Serial('/dev/ttyS0', 115200, timeout=5)
+ser1 = serial.Serial('/dev/ttyS1', 115200, timeout=5)
+ser2 = serial.Serial('/dev/ttyS2', 115200, timeout=5)
+ser3 = serial.Serial('/dev/ttyS3', 115200, timeout=5)
 
 def recvSerial(threadname, serial):
     print "%s" % ( threadName )
