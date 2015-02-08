@@ -3,6 +3,7 @@
 import sys
 import os
 import time
+import thread
 import threading
 import socket
 import codecs
@@ -14,8 +15,12 @@ except NameError:
     False = 0
 
 class Redirector:
-    def __init__(self, serial_instance, serverip, serverport, clientIP, clientPort, spy=False):
+    def __init__(self, serial_instance, serverip, serverport, clientip, clientport, spy=False):
         self.serial = serial_instance
+        self.serverport = serverport
+        self.clientport = clientport
+        self.serverip   = serverip
+        self.clientip   = clientip
         #self.socket = self.launchServer(serverip, serverport)
         #self.socketClient = self.launchClient()
         self.spy = spy
@@ -33,7 +38,7 @@ class Redirector:
 
     def serial_to_ip(self):
         """loop forever and copy serial->socket"""
-        self.socket = self.launchServer(serverip, serverport)
+        self.socket = self.launchServer()
         while self.alive:
             try:
                 data = self.serial.read(1)              # read one, blocking
@@ -67,7 +72,7 @@ class Redirector:
 
     def ip_to_serial(self):
         """loop forever and copy socket->serial"""
-        self.socketClient = self.launchClient(clientip, clientport)
+        self.socketClient = self.launchClient()
         while self.alive:
             try:
                 data = self.socketClient.recv(1024)
@@ -85,7 +90,9 @@ class Redirector:
         self.alive = False
         self.thread_read.join()
         
-    def launchServer(ip, port):    
+    def launchServer(self):  
+        ip = self.serverip
+        port = self.serverport  
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         server_address = (ip, port)
         print >>sys.stderr, 'starting up on %s port %s' % server_address 
@@ -97,10 +104,14 @@ class Redirector:
             try:
                 print >>sys.stderr, 'connected', client_address
                 return connection
-            finally:
-                connection.close()
+            except:
+                print "server connection failed"
+            #finally:
+            #    connection.close()
                 
-    def launchlient(ip, port):
+    def launchClient(self):
+        ip = self.clientip
+        port = self.clientport
         server_address = (ip, port)
         print >>sys.stderr, 'connecting to %s port %s' % server_address
         while True:
@@ -120,67 +131,20 @@ class Redirector:
             
 
     
-if __name__ == '__main':
-
-#**************************************SETUP SERIAL PORTS **********************************************
- 
-    # get port and baud rate from command line arguments or the option switches
-    baudrate = 115200
-    ser0 = serial.Serial('/dev/ttyS0', baudrate, timeout=5)
-    ser1 = serial.Serial('/dev/ttyS1', baudrate, timeout=5)
-    ser2 = serial.Serial('/dev/ttyS2', baudrate, timeout=5)
-    ser3 = serial.Serial('/dev/ttyS3', baudrate, timeout=5)    
-#    ser.parity   = options.parity
-#    ser.rtscts   = options.rtscts
-#    ser.xonxoff  = options.xonxoff
-    
-
-    sys.stderr.write("--- TCP/IP to Serial redirector --- type Ctrl-C / BREAK to quit\n")
-    sys.stderr.write("--- %s %s,%s,%s,%s ---\n" % (ser0.portstr, ser0.baudrate, 8, ser0.parity, 1))
-    sys.stderr.write("--- %s %s,%s,%s,%s ---\n" % (ser1.portstr, ser1.baudrate, 8, ser1.parity, 1))
-    sys.stderr.write("--- %s %s,%s,%s,%s ---\n" % (ser2.portstr, ser2.baudrate, 8, ser2.parity, 1))
-    sys.stderr.write("--- %s %s,%s,%s,%s ---\n" % (ser3.portstr, ser3.baudrate, 8, ser3.parity, 1))
-    
-    try:
-        ser0.open()
-    except serial.SerialException, e:
-        sys.stderr.write("Could not open serial port %s: %s\n" % (ser0.portstr, e))
-        sys.exit(1)
-    try:
-        ser1.open()
-    except serial.SerialException, e:
-        sys.stderr.write("Could not open serial port %s: %s\n" % (ser1.portstr, e))
-        sys.exit(1)
-    try:
-        ser2.open()
-    except serial.SerialException, e:
-        sys.stderr.write("Could not open serial port %s: %s\n" % (ser2.portstr, e))
-        sys.exit(1)
-    try:
-        ser3.open()
-    except serial.SerialException, e:
-        sys.stderr.write("Could not open serial port %s: %s\n" % (ser3.portstr, e))
-        sys.exit(1)
-
-#**************************************SETUP SERIAL PORTS **********************************************
 
     
-   
+def launchinstance(serverport,clientport, serverip, clientip, serialPort): 
     while True:
         try:
-            serverport = 10000
-            clientport = 10001
-            serverip = '192.168.2.3'
-            clientip = '192.168.2.4'
             # enter network <-> serial loop
             r = Redirector(
-                ser0,
+                serialPort,
                 serverip,
                 serverport,
                 clientip,
                 clientport,
                 True,
-            )
+                )
             r.serial_ip_bridge()
             sys.stdout.write('\n')
             sys.stderr.write('Disconnected\n')
@@ -190,4 +154,77 @@ if __name__ == '__main':
         except socket.error, msg:
             sys.stderr.write('ERROR: %s\n' % msg)
 
-    sys.stderr.write('\n--- exit ---\n')
+                #sys.stderr.write('\n--- exit ---\n')
+    
+#if __name__ == '__main':
+print "starting"
+#**************************************SETUP SERIAL PORTS *********************************************
+# get port and baud rate from command line arguments or the option switches
+baudrate = 115200
+ser0 = serial.Serial('/dev/ttyS0', baudrate, timeout=5)
+ser1 = serial.Serial('/dev/ttyS1', baudrate, timeout=5)
+ser2 = serial.Serial('/dev/ttyS2', baudrate, timeout=5)
+ser3 = serial.Serial('/dev/ttyS3', baudrate, timeout=5)    
+#    ser.parity   = options.parity
+#    ser.rtscts   = options.rtscts
+#    ser.xonxoff  = options.xonxoff
+
+
+sys.stderr.write("--- TCP/IP to Serial redirector --- type Ctrl-C / BREAK to quit\n")
+sys.stderr.write("--- %s %s,%s,%s,%s ---\n" % (ser0.portstr, ser0.baudrate, 8, ser0.parity, 1))
+sys.stderr.write("--- %s %s,%s,%s,%s ---\n" % (ser1.portstr, ser1.baudrate, 8, ser1.parity, 1))
+sys.stderr.write("--- %s %s,%s,%s,%s ---\n" % (ser2.portstr, ser2.baudrate, 8, ser2.parity, 1))
+sys.stderr.write("--- %s %s,%s,%s,%s ---\n" % (ser3.portstr, ser3.baudrate, 8, ser3.parity, 1))
+
+try:
+    ser0.open()
+except serial.SerialException, e:
+    sys.stderr.write("Could not open serial port %s: %s\n" % (ser0.portstr, e))
+    sys.exit(1)
+try:
+    ser1.open()
+except serial.SerialException, e:
+    sys.stderr.write("Could not open serial port %s: %s\n" % (ser1.portstr, e))
+    sys.exit(1)
+try:
+    ser2.open()
+except serial.SerialException, e:
+    sys.stderr.write("Could not open serial port %s: %s\n" % (ser2.portstr, e))
+    sys.exit(1)
+try:
+    ser3.open()
+except serial.SerialException, e:
+    sys.stderr.write("Could not open serial port %s: %s\n" % (ser3.portstr, e))
+    sys.exit(1)
+
+#try:
+serverport1 = 10000
+clientport1 = 10001
+serverport2 = 10002
+clientport2 = 10003
+serverport3 = 10004
+clientport3 = 10005
+serverport4 = 10006
+clientport4 = 10007
+
+serverip = '192.168.2.3'
+clientip = '192.168.2.4'
+thread.start_new_thread( launchinstance, ( serverport1, clientport1, serverip, clientip, ser1, ))
+#thread.start_new_thread( launchinstance, ( serverport2, clientport2, serverip, clientip, ser1, ))
+#thread.start_new_thread( launchinstance, ( serverport3, clientport3, serverip, clientip, ser2, ))
+#thread.start_new_thread( launchinstance, ( serverport4, clientport4, serverip, clientip, ser3, ))
+
+#time.sleep(4)
+#thread.start_new_thread( spawnclient, ( clientport, ))
+#    thread.start_new_thread( recvSerial, ("p2", ser2, ))
+#    thread.start_new_thread( recvSerial, ("p3", ser3, ))
+#except:
+ #   print "Error"
+
+#**************************************SETUP SERIAL PORTS **********************************************    
+
+#while 1:
+#    pass
+    
+    
+
