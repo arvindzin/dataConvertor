@@ -125,7 +125,7 @@ class Redirector:
             else:
                 return sock
     
-class Control:
+class smbusControl:
     gpio = smbus.SMBus(2)
     def __init__(self, serverport, serverip, clientport, clientip, address, gpiodirection):
         self.gpio_device_addr = address
