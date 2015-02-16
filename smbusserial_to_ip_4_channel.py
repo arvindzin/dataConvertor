@@ -8,6 +8,8 @@ import threading
 import socket
 import codecs
 import serial
+import smbus
+
 try:
     True
 except NameError:
@@ -123,7 +125,7 @@ class Redirector:
             else:
                 return sock
     
-class smbusControl:
+class Control:
     gpio = smbus.SMBus(2)
     def __init__(self, serverport, serverip, clientport, clientip, address, gpiodirection):
         self.gpio_device_addr = address
