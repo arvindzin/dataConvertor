@@ -209,22 +209,11 @@ clientport4 = 10007
 
 serverip = '192.168.2.3'
 clientip = '192.168.2.4'
-thread.start_new_thread( launchinstance, ( serverport1, clientport1, serverip, clientip, ser1, ))
-#thread.start_new_thread( launchinstance, ( serverport2, clientport2, serverip, clientip, ser1, ))
-#thread.start_new_thread( launchinstance, ( serverport3, clientport3, serverip, clientip, ser2, ))
-#thread.start_new_thread( launchinstance, ( serverport4, clientport4, serverip, clientip, ser3, ))
+thread.start_new_thread( launchinstance, ( serverport1, clientport1, serverip, clientip, ser0, ))
+thread.start_new_thread( launchinstance, ( serverport2, clientport2, serverip, clientip, ser1, ))
+thread.start_new_thread( launchinstance, ( serverport3, clientport3, serverip, clientip, ser2, ))
+thread.start_new_thread( launchinstance, ( serverport4, clientport4, serverip, clientip, ser3, ))
 
-#time.sleep(4)
-#thread.start_new_thread( spawnclient, ( clientport, ))
-#    thread.start_new_thread( recvSerial, ("p2", ser2, ))
-#    thread.start_new_thread( recvSerial, ("p3", ser3, ))
-#except:
- #   print "Error"
-
-#**************************************SETUP SERIAL PORTS **********************************************    
-
-#while 1:
-#    pass
     
     
 
