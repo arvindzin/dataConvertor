@@ -245,7 +245,7 @@ def launchGpioInterface(serverport, clientport, serverip, clientip, smbus_device
                )
         gpio.gpio_ip_bridge()
     except KeyboardInterrupt:
-        break
+        sys.stderr.write('ERROR:')
     except socket.error, msg:
         sys.stderr.write('ERROR: %s\n' % msg)    
 
