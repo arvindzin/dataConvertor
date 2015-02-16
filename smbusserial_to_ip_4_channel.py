@@ -284,7 +284,7 @@ baudrate = 115200
 ser0 = serial.Serial('/dev/ttyS0', baudrate, timeout=5)
 ser1 = serial.Serial('/dev/ttyS1', baudrate, timeout=5)
 ser2 = serial.Serial('/dev/ttyS2', baudrate, timeout=5)
-ser3 = serial.Serial('/dev/ttyUSB0', baudrate, timeout=5)
+ser3 = serial.Serial('/dev/ttyS3', baudrate, timeout=5)
 #    ser.parity   = options.parity
 #    ser.rtscts   = options.rtscts
 #    ser.xonxoff  = options.xonxoff
