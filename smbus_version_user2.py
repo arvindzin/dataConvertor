@@ -200,7 +200,7 @@ class smbusControl:
                 data = self.socketClient.recv(packedFmt.size)
                 recvData = packedFmt.unpack(data)
                 print >>sys.stderr, 'Ip smbus', recvData
-                self.writeGpio(int(recvData))                 # get a bunch of bytes and send them
+                self.writeGpio(recvData)                 # get a bunch of bytes and send them
                 # the spy shows what's on the serial port, so log it after converting newlines
             except socket.error, msg:
                 sys.stderr.write('ERROR: %s\n' % msg)
