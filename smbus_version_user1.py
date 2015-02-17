@@ -138,16 +138,17 @@ class smbusControl:
         self._write_lock = threading.Lock()
         
     def writeRegisterPair(self,reg,value):
-        low = value & 0xff
+        #low = value & 0xff
     	high = (value >>  8) & 0xff
-    	self.gpio.write_byte_data(self.gpio_device_addr,reg,low)
+    	#self.gpio.write_byte_data(self.gpio_device_addr,reg,low)
     	self.gpio.write_byte_data(self.gpio_device_addr,reg+1,high)
 			
     # read a 16 bit value to register pair
     def readRegisterPair(self,reg):
     	low = self.gpio.read_byte_data(self.gpio_device_addr,reg)
-    	high = self.gpio.read_byte_data(self.gpio_device_addr,reg+1)
-    	return low | (high << 8)
+    	#high = self.gpio.read_byte_data(self.gpio_device_addr,reg+1)
+    	high = 0
+        return low | (high << 8)
 			
     # set IO ports to input if the corresponding direction bit is 1.
     # otherwise set it to output
@@ -338,7 +339,7 @@ clientport5 = 10008
 serverip = '192.168.2.4'
 clientip = '192.168.2.3'
 smbus_device_address = 0x20
-gpio_mask = 0xffff
+gpio_mask = 0x00ff
 thread.start_new_thread( launchinstance, ( serverport1, clientport1, serverip, clientip, ser0, ))
 thread.start_new_thread( launchinstance, ( serverport2, clientport2, serverip, clientip, ser1, ))
 thread.start_new_thread( launchinstance, ( serverport3, clientport3, serverip, clientip, ser2, ))
